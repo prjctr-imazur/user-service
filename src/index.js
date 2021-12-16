@@ -9,8 +9,8 @@ const errorHandler = require('./api/middleware/errorHandler');
 const loggerHandler = require('./api/middleware/loggerHandler');
 
 const config = {
-  host: configService.get('APP_HOST'),
-  port: configService.get('APP_PORT'),
+  host: configService.host,
+  port: configService.port,
 };
 
 const app = new Koa();
