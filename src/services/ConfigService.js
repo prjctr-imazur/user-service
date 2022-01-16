@@ -1,3 +1,5 @@
+require('../bootstrap');
+
 const packageJson = require('../../package.json');
 
 class ConfigService {
@@ -7,6 +9,10 @@ class ConfigService {
 
   get version() {
     return packageJson.version;
+  }
+
+  get environment() {
+    return process.env.NODE_ENV || 'development';
   }
 
   get host() {
@@ -19,6 +25,19 @@ class ConfigService {
 
   get logLevel() {
     return process.env.LOG_LEVEL;
+  }
+
+  get gateway() {
+    return process.env.GATEWAY_URL;
+  }
+
+  get database() {
+    return {
+      host: process.env.DATABASE_HOST,
+      database: process.env.DATABASE_NAME,
+      password: process.env.DATABASE_PASSWORD,
+      username: process.env.DATABASE_USER_NAME,
+    };
   }
 }
 
