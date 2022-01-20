@@ -1,5 +1,5 @@
 const { validate } = require('../middleware/validation');
-const respond = require('../helpers/respond');
+const { respond } = require('../helpers/respond');
 
 const CreateUserValidator = require('../validators/CreateUserValidator');
 const CreateUserController = require('../controllers/CreateUserController');
@@ -20,9 +20,11 @@ function register(router) {
   router.post('/users', validate(new CreateUserValidator()), async (ctx) => {
     const controller = new CreateUserController();
 
-    const data = await controller.handle(ctx.request.body);
+    const { email, name } = ctx.request.body;
 
-    respond.success(ctx, data);
+    const [error, data] = await controller.handle({ email, name });
+
+    return data ? respond(ctx, data, 201) : respond(ctx, error, 400);
   });
 
   router.get('/users/:id', validate(new ShowUserValidator()), async (ctx) => {
@@ -30,7 +32,7 @@ function register(router) {
 
     const user = await controller.handle(ctx.request.params);
 
-    return user ? respond.success(ctx, user) : respond.notfound(ctx);
+    return user ? respond(ctx, user) : respond(ctx, null, 404);
   });
 
   router.get(
@@ -41,7 +43,7 @@ function register(router) {
 
       const user = await controller.handle(ctx.request.params);
 
-      return user ? respond.success(ctx, user) : respond.notfound(ctx);
+      return user ? respond(ctx, user) : respond(ctx, null, 404);
     }
   );
 
@@ -53,7 +55,7 @@ function register(router) {
 
       const user = await controller.handle(ctx.request.params);
 
-      return user ? respond.success(ctx, user) : respond.notfound(ctx);
+      return user ? respond(ctx, user) : respond(ctx, null, 404);
     }
   );
 
@@ -65,7 +67,7 @@ function register(router) {
 
       const user = await controller.handle(ctx.request.params);
 
-      return user ? respond.success(ctx, user) : respond.notfound(ctx);
+      return user ? respond(ctx, user) : respond(ctx, null, 404);
     }
   );
 }

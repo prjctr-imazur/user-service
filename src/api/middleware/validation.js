@@ -1,11 +1,11 @@
-const { failure } = require('../helpers/respond');
+const { respond } = require('../helpers/respond');
 
 function validate(validator) {
   return async (ctx, next) => {
     const { errors } = await validator.validate(ctx.request);
 
     if (errors !== null) {
-      failure(ctx, errors, 400);
+      respond(ctx, errors, 400);
 
       return;
     }

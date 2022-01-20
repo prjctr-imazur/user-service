@@ -1,4 +1,3 @@
-const joi = require('joi');
 const { User } = require('../../database/models');
 
 const loggerService = require('../../services/LoggerService');
@@ -18,13 +17,18 @@ class ShowUserController {
         gatewayService.get(`/history?userId=${id}`),
       ]);
 
-      const [videos = [], subscriptions = [], history = []] = batch.map(
-        ({ value: { data } }) => data
+      const [videos, subscriptions, history] = batch.map(
+        (payload) => payload?.value?.data ?? []
       );
 
-      return { user, videos, history, subscriptions };
+      return {
+        user,
+        videos,
+        history,
+        subscriptions,
+      };
     } catch (err) {
-      loggerService.error(err.message);
+      loggerService.error(`Error while fetching user [${id}]: ${err.message}`);
       return null;
     }
   }

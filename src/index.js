@@ -8,6 +8,7 @@ const loggerService = require('./services/LoggerService');
 const router = require('./api/routes');
 const errorHandler = require('./api/middleware/errorHandler');
 const loggerHandler = require('./api/middleware/loggerHandler');
+const { guard } = require('./api/middleware/authorization');
 
 const config = {
   host: configService.host,
@@ -22,12 +23,14 @@ app.use(errorHandler);
 
 app.use(loggerHandler);
 
+app.use(guard());
+
 app.use(router.routes());
 
 app.use(router.allowedMethods());
 
 app.listen(config.port, () => {
   loggerService.info(
-    `App is listening on http://${config.host}:${config.port}`,
+    `App is listening on http://${config.host}:${config.port}`
   );
 });

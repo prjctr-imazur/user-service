@@ -4,20 +4,25 @@ const loggerService = require('../../services/LoggerService');
 class CreateUserController {
   async handle({ email, name }) {
     try {
-      const [user, created] = await User.findOrCreate({
+      const [user, newUser] = await User.findOrCreate({
         where: { email, name },
       });
 
-      if (created) {
-        loggerService.debug(`User ${email} successfully created`);
-      } else {
-        loggerService.debug(`User ${email} already exists`);
+      if (!newUser) {
+        const message = `User with "${email}" already exists`;
+
+        loggerService.debug(message);
+
+        throw new Error(message);
       }
 
-      return user;
+      loggerService.debug(`User "${email}" successfully created`);
+
+      return [null, user];
     } catch (err) {
-      loggerService.error('Create user error', err.message);
-      return null;
+      loggerService.error(err.message);
+
+      return [err.message, null];
     }
   }
 }

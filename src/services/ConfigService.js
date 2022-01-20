@@ -39,6 +39,10 @@ class ConfigService {
       username: process.env.DATABASE_USER_NAME,
     };
   }
+
+  get jwtSecret() {
+    return process.env.JWT_SECRET;
+  }
 }
 
 const configService = (function loadConfigService() {
