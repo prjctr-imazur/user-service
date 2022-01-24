@@ -3,7 +3,7 @@ const { omitBy, isEmpty } = require('lodash');
 function success(ctx, data = null, status = 200) {
   ctx.status = status;
 
-  ctx.body = { data };
+  ctx.body = data?.data ? { ...data } : { data };
 }
 
 function notfound(ctx) {

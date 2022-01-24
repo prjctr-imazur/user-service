@@ -43,6 +43,10 @@ class ConfigService {
   get jwtSecret() {
     return process.env.JWT_SECRET;
   }
+
+  get redis() {
+    return process.env.REDIS_URL;
+  }
 }
 
 const configService = (function loadConfigService() {
