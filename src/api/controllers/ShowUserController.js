@@ -1,4 +1,3 @@
-const joi = require('joi');
 const { User } = require('../../database/models');
 
 const loggerService = require('../../services/LoggerService');
